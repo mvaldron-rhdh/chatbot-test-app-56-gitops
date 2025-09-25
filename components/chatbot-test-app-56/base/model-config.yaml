@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chatbot-test-app-56-model-config
+data:
+  MODEL_ENDPOINT: "${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'Choose from the Catalog model server(s)' || parameters.modelServer === 'Choose from the Catalog model(s)' else parameters.modelEndpoint }}"
+  MODEL_NAME: "${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' || parameters.modelServer === 'Choose from the Catalog model(s)' else 'ibm-granite/granite-3.1-8b-instruct') }}"
